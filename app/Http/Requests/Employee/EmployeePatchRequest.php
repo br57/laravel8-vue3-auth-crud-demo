@@ -64,7 +64,7 @@ class EmployeePatchRequest extends FormRequest
                 Rule::unique('employees')->ignore($this->uuid, 'uuid')
             ],
             'phone' => 'nullable|string',
-            'company_uuid' => 'nullable|uuid|exist:companies,uuid',
+            'company_uuid' => 'nullable|uuid|exists:companies,uuid',
             'status' => 'nullable|in:Active,InActive',
         ];
     }

@@ -16,7 +16,7 @@ class EmployeeResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
-            'company_uuid' => $this->company ? $this->company->uuid : null,
+            'company_uuid' => !is_null($this->company) ? $this->company->uuid : null,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,

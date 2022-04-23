@@ -22,19 +22,19 @@ class CommonController extends Controller
     {
         $users = Cache::get('users', function(){
             return Cache::remember("users", 2629800, function () {
-                return User::all();
+                return User::get();
             });
         });
 
         $companies = Cache::get('companies', function(){
             return Cache::remember("companies", 2629800, function () {
-                return Company::all();
+                return Company::get();
             });
         });
 
         $employees = Cache::get('employees', function(){
             return Cache::remember("employees", 2629800, function () {
-                return Company::all();
+                return Employee::get();
             });
         });
 

@@ -58,7 +58,7 @@ class EmployeePostRequest extends FormRequest
             'last_name' => 'required|string|max:24',
             'email' => 'required|email|unique:employees,email',
             'phone' => 'nullable|string',
-            'company_uuid' => 'nullable|uuid|exist:companies,uuid',
+            'company_uuid' => 'nullable|uuid|exists:companies,uuid',
             'status' => 'nullable|in:Active,InActive',
         ];
     }

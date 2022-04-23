@@ -51,10 +51,6 @@ class Employee extends Model
         'phone',
         'status',
     ];
-    
-    protected $with = [
-        'company'
-    ];
 
     /**
      * Get Company

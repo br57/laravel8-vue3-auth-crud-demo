@@ -60,24 +60,24 @@ export default [
         component: import("@/layouts/adminDefault.vue"),
         children: [
             {
-                path: '/company',
+                path: '',
                 name: 'company-list',
-                component: import("@/pages/company/list.vue"),
+                component: import("@/pages/company/List.vue"),
             },
             {
-                path: '/company/add',
+                path: 'add',
                 name: 'company-add',
-                component: import("@/pages/company/add.vue")
+                component: import("@/pages/company/Add.vue")
             },
             {
-                path: '/company/:uuid',
+                path: ':uuid',
                 name: 'company-view',
                 component: import("@/pages/company/view.vue")
             },
             {
-                path: '/company/edit/:uuid',
+                path: 'edit/:uuid',
                 name: 'company-edit',
-                component: import("@/pages/company/edit.vue")
+                component: import("@/pages/company/Edit.vue")
             },
         ]
     },
@@ -88,43 +88,32 @@ export default [
         component: import("@/layouts/adminDefault.vue"),
         children: [
             {
-                path: '/employee',
+                path: '',
                 name: 'employee-list',
-                component: import("@/pages/employee/list.vue"),
+                component: import("@/pages/employee/List.vue"),
             },
             {
-                path: '/employee/add',
+                path: 'add',
                 name: 'employee-add',
-                component: import("@/pages/employee/add.vue")
+                component: import("@/pages/employee/Add.vue")
             },
             {
-                path: '/employee/edit/:uuid',
+                path: 'edit/:uuid/:uuid2/:uuid3',
                 name: 'employee-edit',
-                component: import("@/pages/employee/edit.vue")
+                component: import("@/pages/employee/Edit.vue")
             },
         ]
     },
+
+    {
+        path: '/test',
+        name: 'StaticTest',
+        component: import("@/pages/TestPage.vue"),
+    },
+    {
+        path: '/test/:jkl/:abc',
+        name: 'dynamicTest',
+        component: import("@/pages/TestPage.vue"),
+    },
     
-
-
-    // {
-    //     path: '/employee',
-    //     name: 'employee-list',
-    //     component: import("@/pages/employee/list.vue")
-    // },
-    // {
-    //     path: '/employee/:uuid',
-    //     name: 'employee-view',
-    //     component: import("@/pages/employee/view.vue")
-    // },
-    // {
-    //     path: '/employee/add',
-    //     name: 'employee-add',
-    //     component: import("@/pages/employee/add.vue")
-    // },
-    // {
-    //     path: '/employee/edit/:uuid',
-    //     name: 'employee-edit',
-    //     component: import("@/pages/employee/edit.vue")
-    // },
 ]

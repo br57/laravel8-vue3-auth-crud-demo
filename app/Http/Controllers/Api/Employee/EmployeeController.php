@@ -30,7 +30,7 @@ class EmployeeController extends Controller
     {
         $employees = Cache::get('employees', function(){
             return Cache::remember("employees", 2629800, function () {
-                return Company::all();
+                return Employee::get();
             });
         });
         
