@@ -27,10 +27,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in employees" :key="item.uuid">
+              <tr v-for="item in employeesMapped" :key="item.uuid">
                 <td>{{`${item.first_name} ${item.last_name}`}}</td>
                 <td v-for="(oi, vi) in headers" :key="`vi_${vi}_${item.uuid}`">{{ item[oi.value] }}</td>
-                <td>{{companyByUuid(item.company_uuid).name}}</td>
+                <td>{{item.company ? item.company.name : ''}}</td>
+                <td>{{item.status.label}}</td>
                 <td>
                   <v-btn :to="{name: 'employee-edit', params: {uuid: item.uuid}}"
                   color="primary"
@@ -55,12 +56,10 @@ export default {
   data: () => ({
     headers: [
       { text: "Email", value: "email" },
-      { text: "Status", value: "status" },
     ],
   }),
   computed: {
-    ...mapGetters("employee", ["employees"]),
-    ...mapGetters("company", ["companyByUuid"]),
+    ...mapGetters("employee", ["employeesMapped"]),
   },
 };
 </script>

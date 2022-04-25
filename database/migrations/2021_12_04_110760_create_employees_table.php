@@ -19,10 +19,11 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('company_id')->nullable()->constrained('companies');
             $table->string('first_name');
             $table->string('last_name')->nullable();
-            $table->string('email')->nullable()->unique();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('status', ['InActive', 'Active'])->nullable()->default('InActive');
+            $table->foreignId('status_id')->nullable()->constrained('statuses');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

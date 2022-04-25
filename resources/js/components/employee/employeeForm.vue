@@ -24,9 +24,8 @@
           :value="company.uuid"
         ></v-radio>
         </v-radio-group>
-        <v-radio-group v-model="form.status" inline label="Status">
-            <v-radio label="Active" color="success" value="Active"></v-radio>
-            <v-radio label="In Active" color="error" value="InActive"></v-radio>
+        <v-radio-group v-model="form.status_uuid" inline label="Status">
+            <v-radio v-for="(status, sk) in statuses" :label="status.label" color="primary" :value="status.uuid" :key="`status_${sk}`"></v-radio>
         </v-radio-group>
         <formValidationMessage :error="error" :success="success" class="mb-3" />
         <v-btn color="primary" elevation="2" large type="submit">Add</v-btn>
@@ -57,6 +56,7 @@ export default {
     computed: {
         ...mapGetters("employee", ["employeeByUuid"]),
         ...mapGetters("company", ["companies"]),
+        ...mapGetters("status", ["statuses"]),
         companyOpts(){
           return this.companies.map(i => {
             return {
@@ -74,7 +74,7 @@ export default {
                 lastName: null,
                 email: null,
                 companyUuid: null,
-                status: null,
+                status_uuid: null,
             };
             if (this.isEdit) {
                 const employee = this.employeeByUuid(this.$route.params.uuid);
@@ -83,7 +83,7 @@ export default {
                     lastName: employee ? employee.last_name : null,
                     email: employee ? employee.email : null,
                     companyUuid: employee ? employee.company_uuid : null,
-                    status: employee ? employee.status : null,
+                    status_uuid: employee ? employee.status_uuid : null,
                 };
             }
         },

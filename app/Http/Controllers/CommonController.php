@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Resources\User\UserResource;
-use App\Http\Resources\Company\CompanyResource;
-use App\Http\Resources\Employee\EmployeeResource;
+use App\Http\Resources\Modules\UserResource;
+use App\Http\Resources\Modules\CompanyResource;
+use App\Http\Resources\Modules\EmployeeResource;
+use App\Http\Resources\Common\StatusResource;
 
 
 class CommonController extends Controller
@@ -20,11 +21,13 @@ class CommonController extends Controller
         $users      =   getCacheData('user');
         $companies  =   getCacheData('company');
         $employees  =   getCacheData('employee');
+        $statuses   =   getCacheData('status');
         
         return response()->json([
             'common_data' => [
                 'users'         =>  UserResource::collection($users),
                 'companies'     =>  CompanyResource::collection($companies),
+                'statuses'      =>  StatusResource::collection($statuses),
                 'employees'     =>  EmployeeResource::collection($employees),
             ],
             'success'           => true,

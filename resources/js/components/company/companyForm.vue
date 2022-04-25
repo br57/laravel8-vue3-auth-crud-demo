@@ -11,9 +11,8 @@
             label="E-mail"
         ></v-text-field>
         <v-text-field v-model="form.website" label="Website"></v-text-field>
-        <v-radio-group v-model="form.status" inline label="Status">
-            <v-radio label="Active" color="success" value="Active"></v-radio>
-            <v-radio label="In Active" color="error" value="InActive"></v-radio>
+        <v-radio-group v-model="form.status_uuid" inline label="Status">
+            <v-radio v-for="(status, sk) in statuses" :label="status.label" color="primary" :value="status.uuid" :key="`status_${sk}`"></v-radio>
         </v-radio-group>
         <v-file-input label="Upload Logo" @change="updateLogo"></v-file-input>
         <formValidationMessage :error="error" :success="success" class="mb-3" />
@@ -44,6 +43,7 @@ export default {
     }),
     computed: {
         ...mapGetters("company", ["companyByUuid", "isCompanyDataLoaded"]),
+        ...mapGetters("status", ["statuses"]),
     },
     methods: {
         ...mapActions("company", ["updateCompany", "createCompany"]),
@@ -53,7 +53,7 @@ export default {
                 email: null,
                 website: null,
                 logo: null,
-                status: null,
+                status_uuid: null,
             };
             if (this.isEdit) {
                 const company = this.companyByUuid(this.$route.params.uuid);
@@ -62,7 +62,7 @@ export default {
                     email: company ? company.email : null,
                     website: company ? company.website : null,
                     logo: company ? company.logo : null,
-                    status: company ? company.status : null,
+                    status_uuid: company ? company.status_uuid : null,
                 };
             }
         },

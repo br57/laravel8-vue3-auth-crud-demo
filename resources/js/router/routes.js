@@ -39,45 +39,45 @@ export default [
         path: '/login',
         name: 'login',
         beforeEnter: ifNotAuthenticates,
-        component: import("@/pages/login.vue")
+        component: () => import("@/pages/login.vue")
     },
     {
         path: '/',
         name: 'root',
         beforeEnter: ifAuthenticated,
-        component: import("@/pages/dashboard/dashboard.vue")
+        component: () => import("@/pages/dashboard/Dashboard.vue")
     },
     {
         path: '/dashboard',
         name: 'dashboard',
         beforeEnter: ifAuthenticated,
-        component: import("@/pages/dashboard/dashboard.vue")
+        component: () => import("@/pages/dashboard/Dashboard.vue")
     },
 
     {
         path: '/company',
         beforeEnter: ifAuthenticated,
-        component: import("@/layouts/adminDefault.vue"),
+        component: () => import("@/layouts/adminDefault.vue"),
         children: [
             {
                 path: '',
                 name: 'company-list',
-                component: import("@/pages/company/List.vue"),
+                component: () => import("@/pages/company/List.vue"),
             },
             {
                 path: 'add',
                 name: 'company-add',
-                component: import("@/pages/company/Add.vue")
+                component: () => import("@/pages/company/Add.vue")
             },
             {
                 path: ':uuid',
                 name: 'company-view',
-                component: import("@/pages/company/view.vue")
+                component: () => import("@/pages/company/view.vue")
             },
             {
                 path: 'edit/:uuid',
                 name: 'company-edit',
-                component: import("@/pages/company/Edit.vue")
+                component: () => import("@/pages/company/Edit.vue")
             },
         ]
     },
@@ -90,17 +90,17 @@ export default [
             {
                 path: '',
                 name: 'employee-list',
-                component: import("@/pages/employee/List.vue"),
+                component: () => import("@/pages/employee/List.vue"),
             },
             {
                 path: 'add',
                 name: 'employee-add',
-                component: import("@/pages/employee/Add.vue")
+                component: () => import("@/pages/employee/Add.vue")
             },
             {
                 path: 'edit/:uuid',
                 name: 'employee-edit',
-                component: import("@/pages/employee/Edit.vue")
+                component: () => import("@/pages/employee/Edit.vue")
             },
         ]
     },
@@ -108,12 +108,12 @@ export default [
     {
         path: '/test',
         name: 'StaticTest',
-        component: import("@/pages/TestPage.vue"),
+        component: () => import("@/pages/TestPage.vue"),
     },
     {
         path: '/test/:jkl/:abc',
         name: 'dynamicTest',
-        component: import("@/pages/TestPage.vue"),
+        component: () => import("@/pages/TestPage.vue"),
     },
     
 ]

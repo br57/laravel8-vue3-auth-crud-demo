@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { user, company, employee } from '@/store/modules'
+import * as modules from '@/store/modules'
 import { isEmpty } from '@/utilities/helper'
 
 export const Store = createStore({
@@ -28,9 +28,5 @@ export const Store = createStore({
       state.isAuth = value
     }
   },
-  modules: {
-    user,
-    company,
-    employee,
-  }
+  modules
 })

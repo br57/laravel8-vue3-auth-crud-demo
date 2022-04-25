@@ -14,10 +14,26 @@ const state = {
     allDataLoaded: false,
 }
 
+function mapData(state, getters, rootState, rootGetters, data){
+    if(isEmpty(data)) return {}
+    let companyByUuid = rootGetters['company/companyByUuid'];
+    let statusByUuid = rootGetters['status/statusByUuid'];
+    if(!isEmpty(data.company_uuid)){
+        data.company = companyByUuid(data.company_uuid)
+    }
+    if(!isEmpty(data.status_uuid)){
+        data.status = statusByUuid(data.status_uuid)
+    }
+    return data
+}
+
 const getters = {
-    employees: state => state.employees,
-    employee: state => state.employee,
-    employeeByUuid: state => uuid => state.employees.find(i => i.uuid == uuid),
+    employees: state => state.employees.sort((a,b) => new Date(a.created_at) - new Date(b.created_at)),
+    employeesMapped: (state, getters, rootState, rootGetters) => getters.employees.map(i => {
+        return mapData(state, getters, rootState, rootGetters, i)
+    }),
+    employee: (state, getters, rootState, rootGetters) => mapData(state, getters, rootState, rootGetters, state.employee),
+    employeeByUuid: (state, getters, rootState, rootGetters) => uuid => mapData(state, getters, rootState, rootGetters, state.employees.find(i => i.uuid == uuid)),
     isEmployeeDataLoaded: state => state.allDataLoaded
 }
 

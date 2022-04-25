@@ -24,26 +24,26 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         /* Company Model Listener */
-        \App\Events\Models\Company\CompanyCreatedEvent::class => [
-            \App\Listeners\Models\Company\CompanyCreatedListener::class,
+        \App\Events\Modules\Company\CompanyCreatedEvent::class => [
+            \App\Listeners\Modules\Company\CompanyCreatedListener::class,
         ],
-        \App\Events\Models\Company\CompanyUpdatedEvent::class => [
-            \App\Listeners\Models\Company\CompanyUpdatedListener::class,
+        \App\Events\Modules\Company\CompanyUpdatedEvent::class => [
+            \App\Listeners\Modules\Company\CompanyUpdatedListener::class,
         ],
-        \App\Events\Models\Company\CompanyDeleteEvent::class => [
-            \App\Listeners\Models\Company\CompanyDeleteListener::class,
+        \App\Events\Modules\Company\CompanyDeleteEvent::class => [
+            \App\Listeners\Modules\Company\CompanyDeleteListener::class,
         ],
 
 
         /* Employee Model Listener */
-        \App\Events\Models\Employee\EmployeeCreatedEvent::class => [
-            \App\Listeners\Models\Employee\EmployeeCreatedListener::class,
+        \App\Events\Modules\Employee\EmployeeCreatedEvent::class => [
+            \App\Listeners\Modules\Employee\EmployeeCreatedListener::class,
         ],
-        \App\Events\Models\Employee\EmployeeUpdatedEvent::class => [
-            \App\Listeners\Models\Employee\EmployeeUpdatedListener::class,
+        \App\Events\Modules\Employee\EmployeeUpdatedEvent::class => [
+            \App\Listeners\Modules\Employee\EmployeeUpdatedListener::class,
         ],
-        \App\Events\Models\Employee\EmployeeDeleteEvent::class => [
-            \App\Listeners\Models\Employee\EmployeeDeleteListener::class,
+        \App\Events\Modules\Employee\EmployeeDeleteEvent::class => [
+            \App\Listeners\Modules\Employee\EmployeeDeleteListener::class,
         ],
 
 

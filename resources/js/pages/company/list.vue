@@ -28,17 +28,19 @@
                                 >
                                     {{ oi.text }}
                                 </th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in companies" :key="item.uuid">
+                            <tr v-for="item in companiesMapped" :key="item.uuid">
                                 <td
                                     v-for="(oi, vi) in headers"
                                     :key="`vi_${vi}_${item.uuid}`"
                                 >
                                     {{ item[oi.value] }}
                                 </td>
+                                <td>{{item.status.label}}</td>
                                 <td>
                                     <v-btn
                                         :to="{
@@ -69,13 +71,11 @@ export default {
         headers: [
             { text: "Company Name", value: "name" },
             { text: "Email", value: "email" },
-            { text: "Website", value: "status" },
-            { text: "Logo", value: "logo" },
-            { text: "Total Employee", value: "employee" },
+            { text: "Total Employee", value: "total_employees" },
         ],
     }),
     computed: {
-        ...mapGetters("company", ["companies"]),
+        ...mapGetters("company", ["companiesMapped"]),
     },
 };
 </script>

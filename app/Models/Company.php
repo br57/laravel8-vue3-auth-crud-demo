@@ -8,9 +8,12 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\modelHelper;
+
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory, modelHelper, SoftDeletes;
 
     public function __construct(array $attributes = [])
     {
@@ -20,25 +23,38 @@ class Company extends Model
         }
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
+    private function _allValidations(){
+        $uuid_val = 'required|uuid|exists:companies,uuid';
+        return (Object) [
+            'post' => [
+                'name' => 'filled|string|max:24',
+                'email' => 'filled|email|unique:companies,email',
+                'logo' => 'nullable|string',
+                'website' => 'nullable|string',
+                'status_uuid' => 'nullable|uuid|exists:statuses,uuid',
+            ],
+            'patch' => [
+                'uuid' => $uuid_val,
+                'name' => 'filled|string|max:24',
+                'logo' => 'nullable|string',
+                'website' => 'nullable|string',
+                'status_uuid' => 'nullable|uuid|exists:statuses,uuid',
+            ],
+            'uuid' => [
+                'uuid' => $uuid_val,
+            ],
+        ];
+    }
+
     protected $fillable = [
         'uuid',
         'name',
         'email',
         'logo',
         'website',
-        'status',
+        'status_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'id',
     ];
@@ -46,21 +62,29 @@ class Company extends Model
     protected $visible = [
         'uuid',
         'name',
-        'email'
+        'email',
+        'logo',
+        'website',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     protected $dispatchesEvents = [
-        "created"   => \App\Events\Models\Company\CompanyCreatedEvent::class,
-        "updated"   => \App\Events\Models\Company\CompanyUpdatedEvent::class,
-        "deleting"  => \App\Events\Models\Company\CompanyDeleteEvent::class,
+        "created"   => \App\Events\Modules\Company\CompanyCreatedEvent::class,
+        "updated"   => \App\Events\Modules\Company\CompanyUpdatedEvent::class,
+        "deleting"  => \App\Events\Modules\Company\CompanyDeleteEvent::class,
     ];
 
-    /**
-     * Get Employees
-     * 
-     */
     public function employees()
     {
         return $this->hasMany(Employee::class, 'company_id', 'id');
     }
+    
+    public function status()
+    {
+        return $this->hasOne(\App\Models\Status::class, 'id', 'status_id');
+    }
+
+    
 }

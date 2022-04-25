@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Company;
+
+use App\Traits\modelHelper;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory, modelHelper, SoftDeletes;
 
     public function __construct(array $attributes = [])
     {
@@ -19,11 +21,29 @@ class Employee extends Model
         }
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
+    private function _allValidations(){
+        $uuid_val = 'required|uuid|exists:employees,uuid';
+        return (Object) [
+            'post' => [
+                'first_name' => 'required|string|max:24',
+                'last_name' => 'required|string|max:24',
+                'email' => 'required|email|unique:employees,email',
+                'phone' => 'nullable|string|max:14',
+                'status_uuid' => 'required|uuid|exists:statuses,uuid',
+            ],
+            'patch' => [
+                'uuid' => $uuid_val,
+                'first_name' => 'filled|string|max:24',
+                'last_name' => 'filled|string|max:24',
+                'phone' => 'nullable|string|max:14',
+                'status_uuid' => 'filled|uuid|exists:statuses,uuid',
+            ],
+            'uuid' => [
+                'uuid' => $uuid_val,
+            ],
+        ];
+    }
+
     protected $fillable = [
         'uuid',
         'company_id',
@@ -31,14 +51,9 @@ class Employee extends Model
         'last_name',
         'email',
         'phone',
-        'status',
+        'status_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'id',
     ];
@@ -49,15 +64,18 @@ class Employee extends Model
         'last_name',
         'email',
         'phone',
-        'status',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
-
-    /**
-     * Get Company
-     * 
-     */
+    
     public function company()
     {
-        return $this->hasOne(Company::class, 'id', 'company_id');
+        return $this->hasOne(\App\Models\Company::class, 'id', 'company_id');
+    }
+
+    public function status()
+    {
+        return $this->hasOne(\App\Models\Status::class, 'id', 'status_id');
     }
 }

@@ -16,11 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResources([
-        "users" => App\Http\Controllers\Api\User\UserController::class, 
-        "companies" => App\Http\Controllers\Api\Company\CompanyController::class, 
-        "employees" => App\Http\Controllers\Api\Employee\EmployeeController::class, 
+        "status" => \App\Http\Controllers\Api\Common\StatusController::class, 
+        "users" => \App\Http\Controllers\Api\Modules\UserController::class, 
+        "companies" => \App\Http\Controllers\Api\Modules\CompanyController::class, 
+        "employees" => \App\Http\Controllers\Api\Modules\EmployeeController::class, 
     ]);
-    Route::get("common-auth-call", [App\Http\Controllers\CommonController::class, 'getBasicAuthData']);
+    Route::get("common-auth-call", [\App\Http\Controllers\CommonController::class, 'getBasicAuthData']);
 });
-Route::post('/login',[App\Http\Controllers\Api\Auth\LoginController::class, 'login']);
-Route::post('/logout',[App\Http\Controllers\Api\Auth\LoginController::class, 'logout']);
+Route::post('/login',[\App\Http\Controllers\Api\Auth\LoginController::class, 'login']);
+Route::post('/logout',[\App\Http\Controllers\Api\Auth\LoginController::class, 'logout']);

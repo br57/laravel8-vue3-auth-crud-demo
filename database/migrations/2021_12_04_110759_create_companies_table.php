@@ -17,11 +17,12 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->string('email')->nullable()->unique();
+            $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
-            $table->enum('status', ['InActive', 'Active'])->nullable()->default('InActive');
+            $table->foreignId('status_id')->nullable()->constrained('statuses');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

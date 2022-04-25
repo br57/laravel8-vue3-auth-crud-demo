@@ -17,6 +17,10 @@ function unpackCommon(commonData, commit) {
                 data.companies = isEmpty(value) ? [] : value
                 commit('company/getCompanies', data, { root: true })
                 break
+            case "statuses":
+                data.statuses = isEmpty(value) ? [] : value
+                commit('status/getStatuses', data, { root: true })
+                break
             case "employees":
                 data.employees = value
                 commit('employee/getEmployees', data, { root: true })
@@ -29,6 +33,14 @@ function unpackCommon(commonData, commit) {
     })
 }
 
+function mapData(state, getters, rootState, rootGetters, data){
+    if(isEmpty(data)) return {}
+    let statusByUuid = rootGetters['status/statusByUuid'];
+    if(!isEmpty(data.status_uuid)){
+        data.status = statusByUuid(data.status_uuid)
+    }
+    return data
+}
 
 const moduleApiUrl = '/api/users'
 
@@ -39,9 +51,11 @@ const state = {
 }
 
 const getters = {
-    users: state => state.users,
-    user: state => state.user,
-    userByUuid: state => uuid => state.users.find(i => i.uuid == uuid),
+    users: (state, getters, rootState, rootGetters) => state.users.map(i => {
+        return mapData(state, getters, rootState, rootGetters, i)
+    }),
+    user: (state, getters, rootState, rootGetters) => mapData(state, getters, rootState, rootGetters, state.user),
+    userByUuid: (state, getters, rootState, rootGetters) => uuid => mapData(state, getters, rootState, rootGetters, state.users.find(i => i.uuid == uuid)),
     isUserDataLoaded: state => state.allDataLoaded
 }
 
@@ -53,9 +67,9 @@ const actions = {
             case 200:
                 unpackCommon(data.common_data, commit)
                 break
-            default:
-                console.error(`commonCall()::API Failed with status code ${status}`, data)
-                break
+            // default:
+            //     console.error(`commonCall()::API Failed with status code ${status}`, data)
+            //     break
         }
         return response
     },
