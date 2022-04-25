@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Employee;
+
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Employee;
 
 class Company extends Model
 {
@@ -46,6 +47,12 @@ class Company extends Model
         'uuid',
         'name',
         'email'
+    ];
+
+    protected $dispatchesEvents = [
+        "created"   => \App\Events\Models\Company\CompanyCreatedEvent::class,
+        "updated"   => \App\Events\Models\Company\CompanyUpdatedEvent::class,
+        "deleting"  => \App\Events\Models\Company\CompanyDeleteEvent::class,
     ];
 
     /**

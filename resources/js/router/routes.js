@@ -98,7 +98,7 @@ export default [
                 component: import("@/pages/employee/Add.vue")
             },
             {
-                path: 'edit/:uuid/:uuid2/:uuid3',
+                path: 'edit/:uuid',
                 name: 'employee-edit',
                 component: import("@/pages/employee/Edit.vue")
             },

@@ -55,6 +55,11 @@ class EmployeeController extends Controller
         }
         $employee->save();
         Cache::forget("employees");
+        $employees = Cache::get('employees', function(){
+            return Cache::remember("employees", 2629800, function () {
+                return Employee::get();
+            });
+        });
         return response()->json([
             "success" => true,
             "employee" => new EmployeeResource($employee)
@@ -91,15 +96,20 @@ class EmployeeController extends Controller
         unset($update['_method']);
         if($request->filled('company_uuid')){
             $update['company_id'] = null;
-            $company = Company::where('uuid', $request->company_uuid)->get()->first();
+            $company = Company::firstWhere('uuid', $request->company_uuid);
             $update['company_id'] = $company->id;
             unset($update['company_uuid']);
         }
         Employee::where('uuid', $uuid)->update($update);
         Cache::forget("employees");
+        $employees = Cache::get('employees', function(){
+            return Cache::remember("employees", 2629800, function () {
+                return Employee::get();
+            });
+        });
         return response()->json([
             'success' => true,
-            'employee' => new EmployeeResource(Employee::where('uuid', $uuid)->get()->first())
+            'employee' => new EmployeeResource(Employee::firstWhere('uuid', $uuid))
         ]);
     }
 

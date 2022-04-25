@@ -29,7 +29,7 @@ class CompanyController extends Controller
     {
         $companies = Cache::get('companies', function(){
             return Cache::remember("companies", 2629800, function () {
-                return Company::all();
+                return Company::get();
             });
         });
         
@@ -49,7 +49,14 @@ class CompanyController extends Controller
         $company = new Company;
         $company->fill($request->validated());
         $company->save();
+
         Cache::forget("companies");
+        $companies = Cache::get('companies', function(){
+            return Cache::remember("companies", 2629800, function () {
+                return Company::get();
+            });
+        });
+
         return response()->json([
             "success" => true,
             "company" => new CompanyResource($company)
@@ -81,14 +88,21 @@ class CompanyController extends Controller
      */
     public function update(CompanyPatchRequest $request, $uuid)
     {
-        $update = $request->validated();
-        unset($update['uuid']);
-        unset($update['_method']);
-        Company::where('uuid', $uuid)->update($update);
-        Cache::forget("companies");
+        $updates = $request->validated();
+        $fillableFields = app(Company::class)->getFillable();
+
+        $company = Company::firstWhere('uuid', $uuid);
+        collect($updates)->each(function ($update, $key) use($company, $fillableFields){
+            if(in_array($key, $fillableFields)){
+                $company->$key = $update;
+            }
+        });
+        $company->save();
+        $company = $company->refresh();
+        
         return response()->json([
             'success' => true,
-            'company' => new CompanyResource(Company::where('uuid', $uuid)->get()->first())
+            'company' => new CompanyResource($company)
         ]);
     }
 

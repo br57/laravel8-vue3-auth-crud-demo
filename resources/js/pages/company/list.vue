@@ -72,7 +72,6 @@ export default {
             { text: "Website", value: "status" },
             { text: "Logo", value: "logo" },
             { text: "Total Employee", value: "employee" },
-            { text: "PARENT comapmy", value: "employee" },
         ],
     }),
     computed: {
