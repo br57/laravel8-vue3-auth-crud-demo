@@ -8,25 +8,24 @@
           fab
           large
           justify="center"
-          rounded
           :to="{ name: 'employee-list' }"
         >
           All Employees
         </v-btn>
       </v-col>
       <v-col cols="12" md="4">
-        <employeeForm :isEdit="true" />
+        <EmployeeForm :isEdit="true" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import employeeForm from '@/components/employee/employeeForm.vue'
+import EmployeeForm from '@/components/employee/EmployeeForm.vue'
 export default {
-  name: "employeeEdit",
+  name: "EditEmployee",
   components: {
-    employeeForm
+    EmployeeForm
   },
 };
 </script>

@@ -4,18 +4,18 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 if (!function_exists('getCacheData')) {
-    function getCacheData($modelName = null, $cacheName = null) {
+    function getCacheData($modelName = null, $limit = null) {
         if(!is_null($modelName)){
 
             $modal = Str::ucfirst(Str::of($modelName)->trim()->lower());
             $namespacedModel = '\\App\\Models\\'.$modal;
-            $modelTable = $cacheName;
             
-            if(is_null($modelTable)){
-                $modelClass = new $namespacedModel();
-                $modelTable = $modelClass->getTable();
+            $modelClass = new $namespacedModel();
+            $modelTable = $modelClass->getTable();
+            if(is_null($limit)){
+                return $namespacedModel::take(10000)->get();
             }
-            return $namespacedModel::get();
+            return $namespacedModel::take($limit)->get();
             return Cache::get($modelTable, function() use($modelTable, $namespacedModel) {
                 return Cache::remember($modelTable, 2629800, function () use($modelTable, $namespacedModel) {
                     return $namespacedModel::get();
@@ -70,7 +70,7 @@ if (!function_exists('makeSlug')) {
 
             if(!is_null($check)){
                 $newSlug = $slug."-".rand(1,50);
-                return $this->makeSlug($newSlug, $modelName, $self_id_or_uuid, $slug_labels);
+                return makeSlug($newSlug, $modelName, $self_id_or_uuid, $slug_labels);
             }
         }
         return $slug;
@@ -79,7 +79,7 @@ if (!function_exists('makeSlug')) {
 
 
 if (!function_exists('getIdByUuid')) {
-    function getIdByUuid($uuid = null, $modelName = null, $db_data = []) {
+    function getIdByUuid($uuid = null, $modelName = null) {
 
         if(!is_null($modelName) && !is_null($uuid)){
             $modal = Str::ucfirst(Str::of($modelName)->trim()->lower());

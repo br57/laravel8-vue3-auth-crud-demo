@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\modelHelper;
 use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable, SoftDeletes, modelHelper;
@@ -31,12 +32,14 @@ class User extends Authenticatable
                 'email' => 'required|email|unique:users,email',
                 'phone' => 'nullable|string|max:14',
                 'status_uuid' => 'required|uuid|exists:statuses,uuid',
+                'company_uuid' => 'nullable|uuid|exists:companies,uuid',
             ],
             'patch' => [
                 'uuid' => $uuid_val,
                 'name' => 'filled|string|max:24',
                 'phone' => 'nullable|string|max:14',
                 'status_uuid' => 'filled|uuid|exists:statuses,uuid',
+                'company_uuid' => 'nullable|uuid|exists:companies,uuid',
             ],
             'uuid' => [
                 'uuid' => $uuid_val,
@@ -51,6 +54,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'status_id',
+        'company_id',
     ];
 
     protected $hidden = [
@@ -64,6 +68,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'status_uuid',
+        'company_uuid',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -83,8 +88,15 @@ class User extends Authenticatable
     {
         return $this->hasOne(\App\Models\Status::class, 'id', 'status_id');
     }
+    public function company()
+    {
+        return $this->hasOne(\App\Models\Company::class, 'id', 'company_id');
+    }
 
     public function getStatusUuidAttribute(){
         return (!is_null($this->status)) ? $this->status->uuid : null;
+    }
+    public function getCompanyUuidAttribute(){
+        return (!is_null($this->company)) ? $this->company->uuid : null;
     }
 }

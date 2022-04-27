@@ -27,11 +27,12 @@ class Company extends Model
         $uuid_val = 'required|uuid|exists:companies,uuid';
         return (Object) [
             'post' => [
-                'name' => 'filled|string|max:24',
-                'email' => 'filled|email|unique:companies,email',
+                'name' => 'required|string|max:24',
+                'email' => 'required|email|unique:companies,email',
                 'logo' => 'nullable|string',
                 'website' => 'nullable|string',
-                'status_uuid' => 'nullable|uuid|exists:statuses,uuid',
+                'status_uuid' => 'required|uuid|exists:statuses,uuid',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'patch' => [
                 'uuid' => $uuid_val,
@@ -39,6 +40,7 @@ class Company extends Model
                 'logo' => 'nullable|string',
                 'website' => 'nullable|string',
                 'status_uuid' => 'nullable|uuid|exists:statuses,uuid',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'uuid' => [
                 'uuid' => $uuid_val,
@@ -53,6 +55,7 @@ class Company extends Model
         'logo',
         'website',
         'status_id',
+        'user_id',
     ];
 
     protected $hidden = [
@@ -84,6 +87,11 @@ class Company extends Model
     public function status()
     {
         return $this->hasOne(\App\Models\Status::class, 'id', 'status_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 
     

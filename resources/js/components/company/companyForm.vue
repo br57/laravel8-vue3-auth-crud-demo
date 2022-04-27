@@ -16,19 +16,22 @@
         </v-radio-group>
         <v-file-input label="Upload Logo" @change="updateLogo"></v-file-input>
         <formValidationMessage :error="error" :success="success" class="mb-3" />
-        <v-btn color="primary" elevation="2" large type="submit">Add</v-btn>
+        <v-btn text color="teal accent-4" type="submit">
+            <template v-if="isEdit">
+                Save Company
+            </template>
+            <template v-else>
+                Add Company
+            </template>
+        </v-btn>
     </v-form>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import formValidationMessage from "@/components/formValidationMessage";
 import { decodeLaravelValidationErrors, isEmpty } from "@/utilities/helper";
 export default {
-    name: "companyForm",
-    components: {
-        formValidationMessage,
-    },
+    name: "CompanyForm",
     props: {
         isEdit: {
             type: Boolean,
@@ -70,45 +73,28 @@ export default {
             console.log(files);
             this.form.logo = files[0];
         },
-        addCompany() {
+        async addCompany() {
             let form = this.form;
+            let res = {}
             if (this.isEdit) {
-                form.uuid = this.$route.params.uuid;
-                this.updateCompany(form)
-                    .then((r) => {
-                        const res = r.response.data;
-                        if (!isEmpty(res)) {
-                            this.$router.push({
-                                name: "company-list",
-                            });
-                        } else {
-                            let errors = decodeLaravelValidationErrors(
-                                res.errors
-                            );
-                            if (errors) {
-                                this.error = errors;
-                            }
-                        }
-                    })
-                    .catch((e) => {});
+                form.uuid = this.$route.params.uuid
+                res = await this.updateCompany(form)
             } else {
-                this.createCompany(form)
-                    .then((r) => {
-                        const res = r.data || r.response.data;
-                        if (!isEmpty(res.success)) {
-                            this.$router.push({
-                                name: "company-list",
-                            });
-                        } else {
-                            let errors = decodeLaravelValidationErrors(
-                                res.errors
-                            );
-                            if (errors) {
-                                this.error = errors;
-                            }
-                        }
-                    })
-                    .catch((e) => {});
+                res = await this.createCompany(form)
+            }
+            if(!isEmpty(res.data)){
+                if(res.status === 200){
+                    this.$router.push({
+                        name: "company-list",
+                    });
+                    return
+                }
+                let errors = decodeLaravelValidationErrors(
+                    res.data.errors
+                );
+                if (errors) {
+                    this.error = errors;
+                }
             }
         },
     },

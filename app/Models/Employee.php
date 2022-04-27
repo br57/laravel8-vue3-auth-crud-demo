@@ -30,6 +30,7 @@ class Employee extends Model
                 'email' => 'required|email|unique:employees,email',
                 'phone' => 'nullable|string|max:14',
                 'status_uuid' => 'required|uuid|exists:statuses,uuid',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'patch' => [
                 'uuid' => $uuid_val,
@@ -37,6 +38,7 @@ class Employee extends Model
                 'last_name' => 'filled|string|max:24',
                 'phone' => 'nullable|string|max:14',
                 'status_uuid' => 'filled|uuid|exists:statuses,uuid',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'uuid' => [
                 'uuid' => $uuid_val,
@@ -52,6 +54,7 @@ class Employee extends Model
         'email',
         'phone',
         'status_id',
+        'user_id',
     ];
 
     protected $hidden = [
@@ -77,5 +80,10 @@ class Employee extends Model
     public function status()
     {
         return $this->hasOne(\App\Models\Status::class, 'id', 'status_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 }

@@ -21,7 +21,6 @@ export default {
     ...mapActions('user', ['commonCall'])
   },
   mounted(){
-    console.log(this.isAuth, 'this.isAuth');
     if(this.isAuth) this.commonCall()
   }
 };

@@ -21,6 +21,7 @@ class CreateCompaniesTable extends Migration
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
             $table->foreignId('status_id')->nullable()->constrained('statuses');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });

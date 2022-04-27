@@ -33,6 +33,9 @@ class EmployeeController extends Controller
         if($request->has('status_uuid')){
             $employee->status_id = getIdByUuid($request->status_uuid, 'status');
         }
+        if($request->has('user_uuid')){
+            $employee->user_id = getIdByUuid($request->user_uuid, 'user');
+        }
         $employee->save();
         $employee = $employee->refresh();
 
@@ -61,6 +64,9 @@ class EmployeeController extends Controller
         }
         if($request->has('status_uuid')){
             $employee->status_id = getIdByUuid($request->status_uuid, 'status');
+        }
+        if($request->has('user_uuid')){
+            $employee->user_id = getIdByUuid($request->user_uuid, 'user');
         }
         $employee->save();
         $employee = $employee->refresh();

@@ -31,12 +31,8 @@
 
 <script>
 import { mapActions } from "vuex";
-import formValidationMessage from "@/components/formValidationMessage";
 import { decodeLaravelValidationErrors, isEmpty } from "@/utilities/helper";
 export default {
-  components: {
-    formValidationMessage,
-  },
   data: () => ({
     form: {},
     success: null,

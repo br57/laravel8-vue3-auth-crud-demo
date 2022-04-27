@@ -42,6 +42,49 @@ export function isEmpty(value) {
     );
 }
 
+export function dateTimeFormat(date, outputFormat) {
+    return moment(date).format(outputFormat)
+}
+
+export function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index
+}
+
+
+export function isNumeric(value = null){
+    if(isEmpty(value)){
+        return false
+    }
+    return !isNaN(parseInt(value))
+}
+
+
+export function strToLower(value = null, makeSlug = false){
+    if(typeof value !== 'string'){
+        return value
+    }
+    if(isEmpty(value)){
+        return null
+    }
+    let str = null
+    if(makeSlug){
+        str = value.toLowerCase().replace(/\s+/g, '-')
+    }else{
+        str = value.toLowerCase()
+    }
+    return str;
+}
+
+export function strToUpper(value = null){
+    if(typeof value !== 'string'){
+        return value
+    }
+    if(isEmpty(value)){
+        return null
+    }
+    return value.toUpperCase()
+}
+
 export function makeFormDataFromObject(input) {
     let data = new FormData();
     Object.keys(input).forEach((k, index) => {

@@ -24,12 +24,12 @@ class CommonController extends Controller
         $statuses   =   getCacheData('status');
         
         return response()->json([
-            'common_data' => [
+            'common_data' => json_encode([
                 'users'         =>  UserResource::collection($users),
                 'companies'     =>  CompanyResource::collection($companies),
                 'statuses'      =>  StatusResource::collection($statuses),
                 'employees'     =>  EmployeeResource::collection($employees),
-            ],
+            ]),
             'success'           => true,
         ]);
     }

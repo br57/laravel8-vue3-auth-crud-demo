@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->foreignId('status_id')->nullable()->constrained('statuses');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });

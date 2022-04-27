@@ -43,7 +43,7 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $Admin = User::where('email', $request->email)->first();
+        $Admin = User::firstWhere('email', $request->email);
 
         if (!$Admin) {
             throw ValidationException::withMessages([
@@ -58,7 +58,7 @@ class LoginController extends Controller
 
         return response()->json([
             'success'   => true,
-            'common_data'   =>  $common->getBasicAuthData(),
+            // 'common_data'   =>  json_encode($common->getBasicAuthData()),
             'token' => $Admin->createToken('admin')->plainTextToken
         ]);
 

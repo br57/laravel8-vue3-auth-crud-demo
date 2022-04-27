@@ -85,7 +85,7 @@ export default [
     {
         path: '/employee',
         beforeEnter: ifAuthenticated,
-        component: import("@/layouts/adminDefault.vue"),
+        component: () => import("@/layouts/adminDefault.vue"),
         children: [
             {
                 path: '',

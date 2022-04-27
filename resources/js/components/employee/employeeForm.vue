@@ -28,19 +28,22 @@
             <v-radio v-for="(status, sk) in statuses" :label="status.label" color="primary" :value="status.uuid" :key="`status_${sk}`"></v-radio>
         </v-radio-group>
         <formValidationMessage :error="error" :success="success" class="mb-3" />
-        <v-btn color="primary" elevation="2" large type="submit">Add</v-btn>
+        <v-btn text color="teal accent-4" type="submit">
+            <template v-if="isEdit">
+                Save Employee
+            </template>
+            <template v-else>
+                Add Employee
+            </template>
+        </v-btn>
     </v-form>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import formValidationMessage from "@/components/formValidationMessage";
 import { decodeLaravelValidationErrors, isEmpty } from "@/utilities/helper";
 export default {
     name: "employeeForm",
-    components: {
-        formValidationMessage,
-    },
     props: {
         isEdit: {
             type: Boolean,
@@ -91,45 +94,28 @@ export default {
             console.log(files);
             this.form.logo = files[0];
         },
-        addEmployee() {
+        async addEmployee() {
             let form = this.form;
+            let res = {}
             if (this.isEdit) {
-                form.uuid = this.$route.params.uuid;
-                this.updateEmployee(form)
-                    .then((r) => {
-                        const res = r.response.data;
-                        if (!isEmpty(res)) {
-                            this.$router.push({
-                                name: 'employee-list',
-                            })
-                        } else {
-                            let errors = decodeLaravelValidationErrors(
-                                res.errors
-                            );
-                            if (errors) {
-                                this.error = errors;
-                            }
-                        }
-                    })
-                    .catch((e) => {});
+                form.uuid = this.$route.params.uuid
+                res = await this.updateEmployee(form)
             } else {
-                this.createEmployee(form)
-                    .then((r) => {
-                        const res = r.data || r.response.data;
-                        if (!isEmpty(res.success)) {
-                            this.$router.push({
-                                name: 'employee-list',
-                            })
-                        } else {
-                            let errors = decodeLaravelValidationErrors(
-                                res.errors
-                            );
-                            if (errors) {
-                                this.error = errors;
-                            }
-                        }
-                    })
-                    .catch((e) => {});
+                res = await this.updateEmployee(form)
+            }
+            if(!isEmpty(res.data)){
+                if(res.status === 200){
+                    this.$router.push({
+                        name: "employee-list",
+                    });
+                    return
+                }
+                let errors = decodeLaravelValidationErrors(
+                    res.data.errors
+                );
+                if (errors) {
+                    this.error = errors;
+                }
             }
         },
     },

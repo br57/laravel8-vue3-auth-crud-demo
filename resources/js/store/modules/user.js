@@ -8,6 +8,7 @@ import {
 
 
 function unpackCommon(commonData, commit) {
+    commonData = JSON.parse(commonData)
     Object.keys(commonData).forEach(key => {
         let data = {}
         let value = commonData[key]

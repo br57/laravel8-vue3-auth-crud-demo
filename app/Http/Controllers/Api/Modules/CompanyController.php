@@ -30,6 +30,9 @@ class CompanyController extends Controller
         if($request->has('status_uuid')){
             $company->status_id = getIdByUuid($request->status_uuid, 'status');
         }
+        if($request->has('user_uuid')){
+            $company->user_id = getIdByUuid($request->user_uuid, 'user');
+        }
         $company->save();
 
         return response()->json([
@@ -54,6 +57,9 @@ class CompanyController extends Controller
         $company->fill($request->validated());
         if($request->has('status_uuid')){
             $company->status_id = getIdByUuid($request->status_uuid, 'status');
+        }
+        if($request->has('user_uuid')){
+            $company->user_id = getIdByUuid($request->user_uuid, 'user');
         }
         $company->save();
         $company = $company->refresh();

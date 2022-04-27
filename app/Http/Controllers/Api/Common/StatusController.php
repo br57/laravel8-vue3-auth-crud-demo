@@ -28,6 +28,9 @@ class StatusController extends Controller
         $status = new modelClass;
         $status->fill($request->validated());
         $status->slug = makeSlug($status->label, 'status');
+        if($request->has('user_uuid')){
+            $status->user_id = getIdByUuid($request->user_uuid, 'user');
+        }
         $status->save();
 
         return response()->json([
@@ -51,6 +54,9 @@ class StatusController extends Controller
         $status = modelClass::firstWhere('uuid', $uuid);
         $status->fill($request->validated());
         $status->slug = makeSlug($status->label, 'status', $uuid);
+        if($request->has('user_uuid')){
+            $status->user_id = getIdByUuid($request->user_uuid, 'user');
+        }
         $status->save();
         $status = $status->refresh();
         

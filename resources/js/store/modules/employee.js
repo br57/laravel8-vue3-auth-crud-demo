@@ -28,12 +28,17 @@ function mapData(state, getters, rootState, rootGetters, data){
 }
 
 const getters = {
-    employees: state => state.employees.sort((a,b) => new Date(a.created_at) - new Date(b.created_at)),
-    employeesMapped: (state, getters, rootState, rootGetters) => getters.employees.map(i => {
+    employees: state => state.employees.sort((a,b) =>  Number(new Date(a.created_at)) -  Number(new Date(b.created_at))),
+    employeesByCompanyUuid: (state, getters, rootState, rootGetters) => cUuid => getters.employees.filter(i => i.company_uuid == cUuid),
+    employeesByCompanyUuidMapped: (state, getters, rootState, rootGetters) => cUuid => getters.employeesByCompanyUuid(cUuid).map(i => {
         return mapData(state, getters, rootState, rootGetters, i)
     }),
+    employeesMapped: (state, getters, rootState, rootGetters) => getters.employees.map(i => {
+        return mapData(state, getters, rootState, rootGetters, i)
+    }).sort((a,b) =>  Number(new Date(a.created_at)) -  Number(new Date(b.created_at))),
     employee: (state, getters, rootState, rootGetters) => mapData(state, getters, rootState, rootGetters, state.employee),
-    employeeByUuid: (state, getters, rootState, rootGetters) => uuid => mapData(state, getters, rootState, rootGetters, state.employees.find(i => i.uuid == uuid)),
+    employeeByUuid: (state, getters, rootState, rootGetters) => uuid => state.employees.find(i => i.uuid == uuid),
+    employeeByUuidMapped: (state, getters, rootState, rootGetters) => uuid => mapData(state, getters, rootState, rootGetters, getters.employeesByUuid(uuid)),
     isEmployeeDataLoaded: state => state.allDataLoaded
 }
 

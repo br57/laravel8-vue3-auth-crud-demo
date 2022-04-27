@@ -17,21 +17,19 @@ const state = {
 function mapData(state, getters, rootState, rootGetters, data){
     if(isEmpty(data)) return {}
     let statusByUuid = rootGetters['status/statusByUuid'];
-    let employees = rootGetters['employee/employees'];
+    let employeesByCompanyUuid = rootGetters['employee/employeesByCompanyUuid'];
     if(!isEmpty(data.status_uuid)){
         data.status = statusByUuid(data.status_uuid)
     }
-    if(!isEmpty(data.status_uuid)){
-        data.total_employees = employees.filter(i => i.company_uuid == data.uuid).length
-    }
+    data.total_employees = employeesByCompanyUuid(data.uuid).length
     return data
 }
 
 const getters = {
-    companies: state => state.companies.sort((a,b) => new Date(a.created_at) - new Date(b.created_at)),
+    companies: state => state.companies.sort((a,b) =>  Number(new Date(a.created_at)) -  Number(new Date(b.created_at))),
     companiesMapped: (state, getters, rootState, rootGetters) => getters.companies.map(i => {
         return mapData(state, getters, rootState, rootGetters, i)
-    }),
+    }).sort((a,b) =>  Number(new Date(a.created_at)) -  Number(new Date(b.created_at))),
     company: (state, getters, rootState, rootGetters) => mapData(state, getters, rootState, rootGetters, state.company),
     companyByUuid: (state, getters, rootState, rootGetters) => uuid => mapData(state, getters, rootState, rootGetters, state.companies.find(i => i.uuid == uuid)),
     isCompanyDataLoaded: state => state.allDataLoaded

@@ -18,6 +18,7 @@ class StatusResource extends JsonResource
             'uuid' => $this->uuid,
             'label' => $this->label,
             'slug' => $this->slug,
+            'user_uuid' => (!is_null($this->user)) ? $this->user->uuid : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,

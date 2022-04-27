@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "formValidationMessage",
+  name: "FormValidationMessage",
   props: {
     error: {
       type: [Object, Array, String],

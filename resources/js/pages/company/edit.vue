@@ -8,25 +8,24 @@
           fab
           large
           justify="center"
-          rounded
           :to="{ name: 'company-list' }"
         >
           All Companies
         </v-btn>
       </v-col>
       <v-col cols="12" md="4">
-        <comapnyForm :isEdit="true" />
+        <CompanyForm :isEdit="true" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import comapnyForm from '@/components/company/companyForm.vue'
+import CompanyForm from '@/components/company/CompanyForm.vue'
 export default {
-  name: "comapnyEdit",
+  name: "EditCompany",
   components: {
-    comapnyForm
+    CompanyForm
   },
 };
 </script>

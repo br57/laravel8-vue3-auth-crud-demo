@@ -21,14 +21,16 @@ class status extends Model
     }
 
     private function _allValidations(){
-        $uuid_val = 'required|uuid|exists:users,uuid';
+        $uuid_val = 'required|uuid|exists:statuses,uuid';
         return (Object) [
             'post' => [
                 'label' => 'required|string|max:24',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'patch' => [
                 'uuid' => $uuid_val,
                 'label' => 'filled|string|max:24',
+                'user_uuid' => 'nullable|uuid|exists:users,uuid',
             ],
             'uuid' => [
                 'uuid' => $uuid_val,
@@ -51,5 +53,10 @@ class status extends Model
         'label',
         'slug',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
+    }
 
 }

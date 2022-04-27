@@ -21,6 +21,7 @@ class CompanyResource extends JsonResource
             'website' => $this->website,
             'logo' => $this->logo,
             'status_uuid' => (!is_null($this->status)) ? $this->status->uuid : null,
+            'user_uuid' => (!is_null($this->user)) ? $this->user->uuid : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
